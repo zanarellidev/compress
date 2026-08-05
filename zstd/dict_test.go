@@ -115,13 +115,14 @@ func TestBuildDictHomogeneousCorpusValidOffsets(t *testing.T) {
 	sample := func(seed int64) []byte {
 		const boiler = `<div class="card-grid" data-template="responsive"><style>.card-grid{display:grid;gap:6px;background:#0a0a0a;padding:4px}.card-item{color:#333;display:grid}</style><script>(function(){var n=document.querySelectorAll('[data-src]');for(var i=0;i<n.length;i++){var u=n[i].getAttribute('data-src');}})();</script>`
 		rng := rand.New(rand.NewSource(seed))
-		out := boiler
-		for i := 0; i < 8; i++ {
+		var out strings.Builder
+		out.WriteString(boiler)
+		for i := range 8 {
 			p := make([]byte, 32)
 			rng.Read(p)
-			out += fmt.Sprintf(`{"url":"https://example.com/t?id=%d&p=%x"}`, i, p)
+			out.WriteString(fmt.Sprintf(`{"url":"https://example.com/t?id=%d&p=%x"}`, i, p))
 		}
-		return []byte(out)
+		return []byte(out.String())
 	}
 	const sampleCount, historyLimit = 16, 8 << 10
 	samples := make([][]byte, sampleCount)
