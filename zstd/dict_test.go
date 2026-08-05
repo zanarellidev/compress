@@ -895,7 +895,7 @@ func TestSharedDecoderTrainedDictRace(t *testing.T) {
 	weights := map[byte]int{'e': 40, 't': 20, 'a': 12, 'o': 8, 'i': 6, 'n': 5, 's': 4, 'h': 3, 'r': 2}
 	var alphabet []byte
 	for c, n := range weights {
-		for i := 0; i < n; i++ {
+		for range n {
 			alphabet = append(alphabet, c)
 		}
 	}
